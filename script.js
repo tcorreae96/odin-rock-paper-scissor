@@ -1,31 +1,20 @@
 let humanScore = 0;
 let computerScore = 0;
 let roundCount = 0;
-let playing = true;
 
 const humanChoices = document.querySelector("#choices");
 const startRoundBtn = document.querySelector("#startRound");
 const humanScoreText = document.querySelector("#humanScoreText");
 const computerScoreText = document.querySelector("#computerScoreText");
 const text = document.querySelector("#text");
+const winnerText = document.querySelector("#winnerText");
 const roundText = document.querySelector("#roundText");
 let humanChoice;
 
 humanChoices.addEventListener("click", (e) => {
 	humanChoice = e.target.id;
-	if (pl)
 	playRound(humanChoice, getComputerChoice());
 });
-
-startRoundBtn.addEventListener("click", () => playGame());
-
-function isPlaying () {
-	if (playing === true) {
-		return true;
-	} else {
-		return false;
-	}
-}
 
 function getComputerChoice () {
 	number = Math.floor(Math.random() * 9 + 1);
@@ -42,16 +31,28 @@ function getHumanChoice () {
   return humanChoice;
 }
 
-function playGame () {
-	while (isPlaying()) {
-		if (humanScore === 5 || computerScore === 5) {
-			return playing = false;
-		}
-		playRound(humanChoice, getComputerChoice());
+function isWinner () {
+	if (humanScore === 5 || computerScore === 5) {
+		return true;
 	}
 }
 
+function checkWinner () {
+	if (humanScore === 5) {
+		return "human";
+	} else if (computerScore === 5) {
+		return "computer";
+	}
+}
+
+function printWinner (winner) {
+	winner === "human" ? winnerText.innerText = "You Win!" : winnerText.innerText = "Computer Wins!";
+}
+
 function playRound (humanChoice, computerChoice) {
+	if (isWinner()) {
+		return;
+	}
 	roundCount++;
 	roundText.innerText = roundCount;
   if (humanChoice === "rock") {
@@ -100,4 +101,8 @@ function playRound (humanChoice, computerChoice) {
       // return "Its a tie";
     }
   }
+	if (isWinner()) {
+		printWinner(checkWinner());
+		return;
+	}
 }
